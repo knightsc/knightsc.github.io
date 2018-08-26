@@ -1,0 +1,84 @@
+remote_theme: mmistakes/so-simple-theme
+locale: en-US
+title: "Scott Knight"
+description: "Reverse engineering and stuff."
+baseurl: # the subpath of your site, e.g. "/blog"
+url: https://knight.sc
+logo: # path of site logo, e.g. "/assets/images/logo.png"
+date_format: "%B %-d, %Y"
+read_time: true
+words_per_minute: 200
+mathjax: true
+google_fonts:
+  - name: "Source Sans Pro"
+    weights: "400,400i,700,700i"
+  - name: "Lora"
+    weights: "400,400i,700,700i"
+google_analytics: # Google Analytics id, e.g. "UA-NNNNNNNN-N"
+disqus:
+  shortname: # Disqus shortname, e.g. "my_disqus_shortname"
+twitter:
+  username: sdotknight # site's Twitter username
+
+# Liquid
+liquid:
+  error_mode: strict
+
+# Build settings
+markdown: kramdown
+feed:
+  path: atom.xml
+
+# Pagination - https://jekyllrb.com/docs/pagination/
+paginate: 4
+paginate_path: /page:num/
+
+# Search
+search_full_content: false
+
+# Taxonomy pages
+category_archive_path: "/categories/#"
+tag_archive_path: "/tags/#"
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-paginate
+
+# Front Matter Defaults
+defaults:
+  # Post defaults
+  - scope:
+      path: "_posts"
+      type: posts
+    values:
+      layout: post
+      comments: false
+      share: true
+
+# Site Author
+author:
+  name: Scott Knight
+  picture:
+  email:
+  twitter: sdotknight
+  links:
+    - title: Twitter
+      url: https://twitter.com/sdotknight
+      icon: fab fa-twitter-square
+    - title: GitHub
+      url: https://github.com/knightsc
+      icon: fab fa-github-square
+
+# Footer Links
+footer_links:
+  - title: Twitter
+    url: https://twitter.com/sdotknight
+    icon: fab fa-twitter-square
+  - title: GitHub
+    url: https://github.com/knightsc
+    icon: fab fa-github-square
+  - title: Feed
+    url: atom.xml
+    icon: fas fa-rss-square
