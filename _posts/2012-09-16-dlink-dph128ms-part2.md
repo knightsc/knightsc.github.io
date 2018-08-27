@@ -4,9 +4,10 @@ categories:
   - Reverse Engineering
 tags:
   - Assembly
+  - Exploits
   - Linux
   - MIPS
-  - Exploits
+  - Python
 ---
 
 So i failed to mention with the first post. After I found the `tftpsrv`, the first thing I did was to run the `file` commond on it and I got back this
@@ -15,9 +16,7 @@ So i failed to mention with the first post. After I found the `tftpsrv`, the fir
 tftpsrv: ELF 32-bit MSB executable, MIPS, MIPS-I version 1 (SYSV)
 ```
 
-So knowing that, I set out to get some sort of Linux MIPS emulator running. Now again, this part I did over a year ago so I don't remember all the details but I ended up finding a windows qemu build that supported MIPS <a href="http://www.h7.dion.ne.jp/~qemu-win/">here</a>. I think that I installed a version of Debian that worked for big endian mips. I do seem to recall that if my executable had of been little endian it would have been a lot easier to get pre made qemu images.
-
-Ok, no more stuff I did a year ago, now on to the real interesting stuff that I've been working on recently. I'll include a zip file at the end of the post with all the files I'm talking about here for those that are interested.
+So knowing that, I set out to get some sort of Linux MIPS emulator running. I ended up finding a windows qemu build that supported MIPS [here](http://www.h7.dion.ne.jp/~qemu-win/). I installed a version of Debian that worked for big endian mips.
 
 I used objdump to split the exe into a bunch of text files I could read through. I ended up with the following:
 
@@ -30,13 +29,13 @@ tftpsrv.sym.txt
 tftpsrv.text.txt
 ```
 
-The strings file had all sorts of neat things in it, LEDInit, probe_recv(%d), tons of other network things, error messages and whatever else. I used a python script to go through my code in tftpsrv.text.txt and cross reference the strings file to get easier to read assembly. I also parsed the global offset table file and put comments in the assembly from that.
+The strings file had all sorts of neat things in it, `LEDInit`, `probe_recv(%d)`, tons of other network things, error messages and whatever else. I used a python script to go through my code in [tftpsrv.text.txt](https://github.com/knightsc/tftpsrv/blob/master/tftpsrv.text.txt) and cross reference the strings file to get easier to read assembly. I also parsed the global offset table file and put comments in the assembly from that.
 
-After doing all that I sorta lost interest in the firmware and decided to see if I could find any bugs with the program. So I checked through the symbols file for functions that might have bugs. An easy one to start with is `strcpy`. I wrote a python script called `function_graph.py` that parsed the .text file and generated an image of everything that called `strcpy`
+After doing all that I sorta lost interest in the firmware and decided to see if I could find any bugs with the program. So I checked through the symbols file for functions that might have bugs. An easy one to start with is `strcpy`. I wrote a python script called [function_graph.py](https://github.com/knightsc/tftpsrv/blob/master/function_graph.py) that parsed the .text file and generated an image of everything that called `strcpy`
 
-<a href="http://www.flickr.com/photos/scknight/7988479452/"><img alt="" src="http://farm9.staticflickr.com/8315/7988479452_7c76fa4ac1.jpg" title="strcpy" class="alignnone" width="500" height="121" /></a>
+![strcpy graph](/images/strcpy.png){: .align-center}
 
-One of the functions that called `strcpy` was `probe_recv` and for whatever reason it just caught my eye. So I set out to look at `probe_recv` and in turn the function I labeled `run_server`. Well it turned out that `probe_recv` would get called when a packet came in via UDP on port 9999. After looking at `probe_recv` I realized I could send a single '?' to port 9999 and if it was a phone it would respond back with what kind of phone and what version firmware. That's when I wrote the `udp_9999.py` script to scan for all phones running the specific version of firmware I was looking for.
+One of the functions that called `strcpy` was `probe_recv` and for whatever reason it just caught my eye. So I set out to look at `probe_recv` and in turn the function I labeled `run_server`. Well it turned out that `probe_recv` would get called when a packet came in via UDP on port 9999. After looking at `probe_recv` I realized I could send a single '?' to port 9999 and if it was a phone it would respond back with what kind of phone and what version firmware. That's when I wrote the [udp_9999.py](https://github.com/knightsc/tftpsrv/blob/master/udp_9999.py) script to scan for all phones running the specific version of firmware I was looking for.
 
 After looking a little more at `probe_recv` and `run_server`, what stood out to me, instead of the `strcpy` call was this bit of code
 
@@ -111,7 +110,7 @@ Ok, this code looked good, it was basically taking whatever size input the funct
 407080:	02003821 	move	a3,s0
 407084:	8f998018 	lw	t9,-32744(gp)
 407088:	00000000 	nop
-40708c: 27392230  addiu   t9,t9,8752   # 0x402230 probe_recv
+40708c: 27392230 	addiu   t9,t9,8752    # 0x402230 probe_recv
 407090:	00000000 	nop
 407094:	0320f809 	jalr	t9
 407098:	00000000 	nop
@@ -155,9 +154,9 @@ This is important because it means that not only was I controlling the `ra` regi
 40fbfc:	27bd0070 	addiu	sp,sp,112
 ```
 
-So couple things to remember here, with the MIPS instruction pipeline, when a branch happens the command after the branch still gets executed. So it just so happens that at the end of `probe_recv v0` is greater than 0. So `s0` is our file descriptor, `s1` is our buffer and `a2` always gets set to 220 bytes. So now we jump into read and set the app to wait for our next UDP packet to come in on port 9999. I set the buffer to write to the data segment at `0x10000000` and the second return address was still an address we overwrote in the buffer overflow so I set to to jump into my code at `0x10000000`.
+So couple things to remember here, with the MIPS instruction pipeline, when a branch happens the command after the branch still gets executed. So it just so happens that at the end of `probe_recv` `v0` is greater than 0. So `s0` is our file descriptor, `s1` is our buffer and `a2` always gets set to 220 bytes. So now we jump into read and set the app to wait for our next UDP packet to come in on port 9999. I set the buffer to write to the data segment at `0x10000000` and the second return address was still an address we overwrote in the buffer overflow so I set to to jump into my code at `0x10000000`.
 
-Huzzah, I could now run whatever code I wanted as long as it fit into 220 bytes. I googled some mips reverse connect shell code and pasted it into my exploit.py shell script. I set up my machine to run netcat listening on port 443, ran my python script and boom, the phone connected back to me.
+I could now run whatever code I wanted as long as it fit into 220 bytes. I googled some mips reverse connect shell code and pasted it into my [tftpsrv_reverse_shell.py](https://github.com/knightsc/tftpsrv/blob/master/tftpsrv_reverse_shell.py) script. I set up my machine to run netcat listening on port 443, ran my python script and boom, the phone connected back to me.
 
 Quick side note here, it took a lot more time than I just made it out to be to get my shellcode correct. I made it sound easy, but luckily I was able to run the tftpsrv exe in gdb on my qemu machine which made things super nice. I could inspect the stack to figure out my offsets and also test out the reverse connect shellcode. I got it working on my virtual machine and then the first time I ran it on the phone it didn't actually work. Then I realized, the shell code was calling
 
@@ -167,7 +166,7 @@ execve("/bin/sh", NULL, NULL)
 
 Which worked fine on my qemu machine but on the phone, which has busybox installed on it, /bin/sh is just a softlink and busybox inspects the argv parameter to figure out what it should actually run. So I changed it to to pass in a valid argv and then everything worked.
 
-So I end up with this
+Here's the output of dmesg from the phone:
 
 ```shell
 nc -vv -l 443
@@ -288,8 +287,8 @@ ll emulations           : 69792414
 sc emulations           : 69792414
 ```
 
-So i can now connect to my phone and poke around. Some interesting things but here's where I need your help. I have no way to get new commands on the phone. So far all the internet has turned up is to try to use echo with hex escapes but the busybox version on the phone doesn't support that. So if anyone has any suggestions let me know. For now my plan is to go back to the firmware and work on making an updated firmware that I can flash to the phone with more commands available and a way to copy files. 
+So i can now connect to my phone and poke around. I have no way to get new commands on the phone. So far all the internet has turned up is to try to use echo with hex escapes but the busybox version on the phone doesn't support that.
 
-Finally like I said earlier, here are all the files I mentioned in the article including the python exploit. The exploit itself is a little messy and you have to edit it by hand to point to the ips you want.
+All the files I mentioned in the article including the python exploit can be found here:
 
-<a href="http://www.mediafire.com/?p1r2vf851d6e9x3">tftpsrv.zip</a>
+[https://github.com/knightsc/tftpsrv](https://github.com/knightsc/tftpsrv)
