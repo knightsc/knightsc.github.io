@@ -3,11 +3,12 @@ title: LLDB and Python
 categories:
   - Debugging
 tags:
+  - LLDB
   - macOS
   - Python
 ---
 
-MacOSX doesn't come with the most recent Python. It's pretty normal to install a newer version either through brew or if you're like me you just use the anaconda distribution. If you do install a newer version of Python you're likely to encounter problems when trying to access scripting in LLDB.
+MacOSX doesn't come with the most recent Python. It's pretty normal to install a newer version either through brew or something else like the anaconda distribution. If you do install a newer version of Python you're likely to encounter problems when trying to access scripting in LLDB.
 
 ```shell
 $ lldb
@@ -85,7 +86,7 @@ DESCRIPTION
 ...
 ```
 
-You'll also want to make sure you're PYTHONHOME is set so lldb can find it and if you want to import the lldb module into a script for use outside of lldb you'll want to update your PYTHONPATH to include the LLDB framework. I stuck the three lines below in my ~/.bash_profile file.
+You'll also want to make sure you're PYTHONHOME is set so lldb can find it and if you want to import the lldb module into a script for use outside of lldb you'll want to update your PYTHONPATH to include the LLDB framework. I stuck the three lines below in my `~/.bash_profile` file.
 
 ```shell
 PYTHONPATH=$PYTHONPATH:/Applications/Xcode.app/Contents/SharedFrameworks/LLDB.framework/Resources/Python

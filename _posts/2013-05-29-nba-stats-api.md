@@ -1,37 +1,45 @@
 ---
-title: Basketball Jones
+title: NBA Stats API
 categories:
   - Reverse Engineering
 tags:
   - API
+  - JSON
+  - Python
 ---
 
 Well it's been a while since I've updated things. In fact looking back at the last post it's from right around when basketball season started. Anyone who knows me knows I'm a basketball junkie. I spent a good part of the college and nba season wondering what sort of software could enhance my basketball addiction.
 
-The thing I'm most interested in is trying to analyze plays. I've spent a good deal of the season just getting better myself breaking down plays but it intrigues me to think that software could split and categorize plays for me. Computer vision is a complicated topic though and it dawned on me that we get far more data already broken out and available than we used to. In addition to box scores, there's play by plays that categorize what happened and shotcharts. There are some great sites out there like http://vorped.com/bball that are already doing a great job of aggregating this data.
+The thing I'm most interested in is trying to analyze plays. I've spent a good deal of the season just getting better myself breaking down plays but it intrigues me to think that software could split and categorize plays for me. Computer vision is a complicated topic though and it dawned on me that we get far more data already broken out and available than we used to. In addition to box scores, there's play by plays that categorize what happened and shotcharts. There are some great sites out there like [http://vorped.com/bball](http://vorped.com/bball) that are already doing a great job of aggregating this data.
 
-I wanted to take this a step further though. I didn't want just NBA data. I wanted WNBA, D-League, NCAA Mens and NCAA Womens basketball stats. Did I mention I'm a basketball junkie? Well I started with the code on Vorped and started poking around some of the NBA sites. One in particular http://stats.nba.com interested me because they have box scores all the way back to 1946. What I noticed is using some of the screen scrape urls from Vorped i couldn't get old data like I could on the official NBA page. I started watching page loads with the developer tools in chrome and found the following URLs that seemed interesting.
+I wanted to take this a step further though. I didn't want just NBA data. I wanted WNBA, D-League, NCAA Mens and NCAA Womens basketball stats. Did I mention I'm a basketball junkie? Well I started with the code on Vorped and started poking around some of the NBA sites. One in particular [http://stats.nba.com](http://stats.nba.com) interested me because they have box scores all the way back to 1946. What I noticed is using some of the screen scrape urls from Vorped i couldn't get old data like I could on the official NBA page. I started watching page loads with the developer tools in chrome and found the following URLs that seemed interesting.
 
-http://stats.nba.com/stats/commonteamyears?LeagueID=00&amp;callback=teaminfocallback
-http://stats.nba.com/stats/teaminfocommon?Season=2012-13&amp;SeasonType=Regular+Season&amp;LeagueID=00&amp;TeamID=1610612748
-http://stats.nba.com/stats/scoreboard/?LeagueID=00&amp;gameDate=05%2F27%2F2013&amp;DayOffset=0
-http://stats.nba.com/stats/boxscore?GameID=0041200314&amp;RangeType=0&amp;StartPeriod=0&amp;EndPeriod=0&amp;StartRange=0&amp;EndRange=0
-http://stats.nba.com/stats/playbyplay?GameID=0041200314&amp;StartPeriod=0&amp;EndPeriod=0
-http://stats.nba.com/stats/shotchartdetail?Season=2012-13&amp;SeasonType=Regular+Season&amp;TeamID=0&amp;PlayerID=202681&amp;GameID=&amp;Outcome=&amp;Location=&amp;Month=0&amp;SeasonSegment=&amp;DateFrom=&amp;DateTo=&amp;OpponentTeamID=0&amp;VsConference=&amp;VsDivision=&amp;Position=&amp;RookieYear=&amp;GameSegment=&amp;Period=0&amp;LastNGames=0&amp;ContextFilter=&amp;ContextMeasure=FG_PCT
+```
+http://stats.nba.com/stats/commonteamyears?LeagueID=00&callback=teaminfocallback
+http://stats.nba.com/stats/teaminfocommon?Season=2012-13&SeasonType=Regular+Season&LeagueID=00&TeamID=1610612748
+http://stats.nba.com/stats/scoreboard/?LeagueID=00&gameDate=05%2F27%2F2013&DayOffset=0
+http://stats.nba.com/stats/boxscore?GameID=0041200314&RangeType=0&StartPeriod=0&EndPeriod=0&StartRange=0&EndRange=0
+http://stats.nba.com/stats/playbyplay?GameID=0041200314&StartPeriod=0&EndPeriod=0
+http://stats.nba.com/stats/shotchartdetail?Season=2012-13&SeasonType=Regular+Season&TeamID=0&PlayerID=202681&GameID=&Outcome=&Location=&Month=0&SeasonSegment=&DateFrom=&DateTo=&OpponentTeamID=0&VsConference=&VsDivision=&Position=&RookieYear=&GameSegment=&Period=0&LastNGames=0&ContextFilter=&ContextMeasure=FG_PCT
+```
 
 One of the things I noticed in some of these URLs was a LeagueID. It got my wondering if maybe the WNBA and D-League data was also available on stats.nba.com. So I basically just starting plugging in LeagueIDs to the first URL which spits out all teams. LeagueID of '00' is NBA and sure enough when I got to '10' it spit out the WNBA teams. '20' gave me the D-League teams. Now not all of these other leagues have the json data listed above for their games but the scoreboard url does work and using the scoreboard information to get the gamecode I could use the same xml urls being used in on the Vorped site. So for instance, with some easy guessing
 
+```
 http://www.nba.com/games/game_component/dynamic/20130528/MIAIND/pbp_all.xml
+```
 
 becomes
 
+```
 http://www.wnba.com/games/game_component/dynamic/20130527/CHIPHO/pbp_all.xml
+```
 
 And again, I got out the data I wanted. So my plan is to start pulling as much historical data as I can and see what I can see. I don't have college data yet but I think it would be real interesting to try to get that info from ESPN and be able to track players both men and women from college into their professional careers.
 
 For a quick example of some of the data that can be pulled from the urls above check out
 
-https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py
+[https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py](https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py)
 
 And the results
 
