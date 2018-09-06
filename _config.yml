@@ -1,7 +1,7 @@
 remote_theme: mmistakes/so-simple-theme
 locale: en-US
 title: "Scott Knight"
-description: "Reverse engineering and stuff."
+description: "Reverse engineering and debugging."
 baseurl: # the subpath of your site, e.g. "/blog"
 url: https://knight.sc
 logo: # path of site logo, e.g. "/assets/images/logo.png"
