@@ -162,3 +162,131 @@ Length 0x0019
 09: 15 00
 0b: 09 
 0c: 0a 0000
+
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/buffer.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/condition.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/condition_list.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/context.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/error.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/filter.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/instruction.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/modifier.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/modifiers.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/mutable_buffer.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/operation.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/profile.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/regex.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/source_info.c
+/BuildRoot/Library/Caches/com.apple.xbs/Sources/Sandbox/Sandbox-851.201.1/src/compiler/datatypes/textbuf.c
+
+operation
+Modifier
+Filter
+Condition
+
+
+Apply a filter to actions
+
+Actions are allow or deny
+
+Terminal nodes are actions (allow or deny)
+Non terminal nodes are filters
+
+
+operation_filters
+operation_info
+
+0x45f2f - 0x42118
+
+0x3E17
+
+filter_info. NUM_INFO_ENTRIES
+
+modifier_info. modifier != SB_MODIFIER_NONE && modifier < SB_MODIFIER_COUNT
+
+operation_info
+0x41bc0- 0x40940
+operation_names
+0x40938 - 0x404a0 = 0x93
+0x1278
+ = 32
+
+op < NUM_OPERATIONS
+
+modifier %s does not apply to operation %s"
+
+Arg is condition = is foreign_object?
+Arg is operation = is the item an integer number? And is it less than 0x94
+Arg is modifier = is the item an integer number and is it less than 0xd
+
+Actions are allow and deny
+Not all modifiers can be applied to both actions
+
+___sb_sbpl_parser_init_scheme_block_invoke
+
+Define the allow and deny action methods
+
+What is modifier vs filter
+What is condition
+
+Operations
+
+(deny default)
+
+(<action> <operation>)
+
+(deny file-write-data (with no-report))
+
+(<action> <operation> (with <modifier>))
+
+(deny file-read*
+       (literal "/private/var/root")
+       (literal "/private/var/root/Library/Preferences/.GlobalPreferences.plist")
+       (literal "/Library/Preferences/.GlobalPreferences.plist")
+       (with no-report))
+
+(<action> <operation>..n <condition>..n (with <modifier>))
+
+0x3fff0 - 0x3f7f0 
+
+This many filters in filter_info 0x40
+
+0x00007fff6ecf7000
+
+sb_filter_accepts_type(condition->filter, condition->value.type)
+
+condition {
+    refcnt
+    filter
+    value {
+        type
+    }
+    match
+    unmatch
+}
+
+filter < NUM_INFO_ENTRIES && filter_info[filter].name != NULL
+
+typedef struct {
+    char *name;
+    char *group;
+    u8 type
+    u8
+    u8
+    u8
+    void *values
+} filter_info;
+
+none = 0x0
+boolean = 0x1
+bit pattern = 0x2
+integer = 0x3
+string = 0x4
+pattern = 0x5
+pattern = 0x6
+<unknown> = 0x7
+path = 0x8
+regex = 0x9
+network = 0xa
+
+different types of patterns (sb_pattern_is_literal)
