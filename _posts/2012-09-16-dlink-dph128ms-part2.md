@@ -16,7 +16,7 @@ So i failed to mention with the first post. After I found the `tftpsrv`, the fir
 tftpsrv: ELF 32-bit MSB executable, MIPS, MIPS-I version 1 (SYSV)
 ```
 
-So knowing that, I set out to get some sort of Linux MIPS emulator running. I ended up finding a windows qemu build that supported MIPS [here](http://www.h7.dion.ne.jp/~qemu-win/). I installed a version of Debian that worked for big endian mips.
+So knowing that, I set out to get some sort of Linux MIPS emulator running. I ended up finding a windows qemu build that supported MIPS [here](http://www.h7.dion.ne.jp/~qemu-win/){: target="_blank"}. I installed a version of Debian that worked for big endian mips.
 
 I used objdump to split the exe into a bunch of text files I could read through. I ended up with the following:
 
@@ -29,9 +29,9 @@ tftpsrv.sym.txt
 tftpsrv.text.txt
 ```
 
-The strings file had all sorts of neat things in it, `LEDInit`, `probe_recv(%d)`, tons of other network things, error messages and whatever else. I used a python script to go through my code in [tftpsrv.text.txt](https://github.com/knightsc/tftpsrv/blob/master/tftpsrv.text.txt) and cross reference the strings file to get easier to read assembly. I also parsed the global offset table file and put comments in the assembly from that.
+The strings file had all sorts of neat things in it, `LEDInit`, `probe_recv(%d)`, tons of other network things, error messages and whatever else. I used a python script to go through my code in [tftpsrv.text.txt](https://github.com/knightsc/tftpsrv/blob/master/tftpsrv.text.txt){: target="_blank"} and cross reference the strings file to get easier to read assembly. I also parsed the global offset table file and put comments in the assembly from that.
 
-After doing all that I sorta lost interest in the firmware and decided to see if I could find any bugs with the program. So I checked through the symbols file for functions that might have bugs. An easy one to start with is `strcpy`. I wrote a python script called [function_graph.py](https://github.com/knightsc/tftpsrv/blob/master/function_graph.py) that parsed the .text file and generated an image of everything that called `strcpy`
+After doing all that I sorta lost interest in the firmware and decided to see if I could find any bugs with the program. So I checked through the symbols file for functions that might have bugs. An easy one to start with is `strcpy`. I wrote a python script called [function_graph.py](https://github.com/knightsc/tftpsrv/blob/master/function_graph.py){: target="_blank"} that parsed the .text file and generated an image of everything that called `strcpy`
 
 ![strcpy graph](/images/strcpy.png){: .align-center}
 
@@ -156,7 +156,7 @@ This is important because it means that not only was I controlling the `ra` regi
 
 So couple things to remember here, with the MIPS instruction pipeline, when a branch happens the command after the branch still gets executed. So it just so happens that at the end of `probe_recv` `v0` is greater than 0. So `s0` is our file descriptor, `s1` is our buffer and `a2` always gets set to 220 bytes. So now we jump into read and set the app to wait for our next UDP packet to come in on port 9999. I set the buffer to write to the data segment at `0x10000000` and the second return address was still an address we overwrote in the buffer overflow so I set to to jump into my code at `0x10000000`.
 
-I could now run whatever code I wanted as long as it fit into 220 bytes. I googled some mips reverse connect shell code and pasted it into my [tftpsrv_reverse_shell.py](https://github.com/knightsc/tftpsrv/blob/master/tftpsrv_reverse_shell.py) script. I set up my machine to run netcat listening on port 443, ran my python script and boom, the phone connected back to me.
+I could now run whatever code I wanted as long as it fit into 220 bytes. I googled some mips reverse connect shell code and pasted it into my [tftpsrv_reverse_shell.py](https://github.com/knightsc/tftpsrv/blob/master/tftpsrv_reverse_shell.py){: target="_blank"} script. I set up my machine to run netcat listening on port 443, ran my python script and boom, the phone connected back to me.
 
 Quick side note here, it took a lot more time than I just made it out to be to get my shellcode correct. I made it sound easy, but luckily I was able to run the tftpsrv exe in gdb on my qemu machine which made things super nice. I could inspect the stack to figure out my offsets and also test out the reverse connect shellcode. I got it working on my virtual machine and then the first time I ran it on the phone it didn't actually work. Then I realized, the shell code was calling
 
@@ -291,4 +291,4 @@ So i can now connect to my phone and poke around. I have no way to get new comma
 
 All the files I mentioned in the article including the python exploit can be found here:
 
-[https://github.com/knightsc/tftpsrv](https://github.com/knightsc/tftpsrv)
+[https://github.com/knightsc/tftpsrv](https://github.com/knightsc/tftpsrv){: target="_blank"}
