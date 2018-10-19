@@ -10,9 +10,9 @@ tags:
 
 Well it's been a while since I've updated things. In fact looking back at the last post it's from right around when basketball season started. Anyone who knows me knows I'm a basketball junkie. I spent a good part of the college and nba season wondering what sort of software could enhance my basketball addiction.
 
-The thing I'm most interested in is trying to analyze plays. I've spent a good deal of the season just getting better myself breaking down plays but it intrigues me to think that software could split and categorize plays for me. Computer vision is a complicated topic though and it dawned on me that we get far more data already broken out and available than we used to. In addition to box scores, there's play by plays that categorize what happened and shotcharts. There are some great sites out there like [http://vorped.com/bball](http://vorped.com/bball) that are already doing a great job of aggregating this data.
+The thing I'm most interested in is trying to analyze plays. I've spent a good deal of the season just getting better myself breaking down plays but it intrigues me to think that software could split and categorize plays for me. Computer vision is a complicated topic though and it dawned on me that we get far more data already broken out and available than we used to. In addition to box scores, there's play by plays that categorize what happened and shotcharts. There are some great sites out there like [http://vorped.com/bball](http://vorped.com/bball){: target="_blank"} that are already doing a great job of aggregating this data.
 
-I wanted to take this a step further though. I didn't want just NBA data. I wanted WNBA, D-League, NCAA Mens and NCAA Womens basketball stats. Did I mention I'm a basketball junkie? Well I started with the code on Vorped and started poking around some of the NBA sites. One in particular [http://stats.nba.com](http://stats.nba.com) interested me because they have box scores all the way back to 1946. What I noticed is using some of the screen scrape urls from Vorped i couldn't get old data like I could on the official NBA page. I started watching page loads with the developer tools in chrome and found the following URLs that seemed interesting.
+I wanted to take this a step further though. I didn't want just NBA data. I wanted WNBA, D-League, NCAA Mens and NCAA Womens basketball stats. Did I mention I'm a basketball junkie? Well I started with the code on Vorped and started poking around some of the NBA sites. One in particular [http://stats.nba.com](http://stats.nba.com){: target="_blank"} interested me because they have box scores all the way back to 1946. What I noticed is using some of the screen scrape urls from Vorped i couldn't get old data like I could on the official NBA page. I started watching page loads with the developer tools in chrome and found the following URLs that seemed interesting.
 
 ```
 http://stats.nba.com/stats/commonteamyears?LeagueID=00&callback=teaminfocallback
@@ -39,7 +39,7 @@ And again, I got out the data I wanted. So my plan is to start pulling as much h
 
 For a quick example of some of the data that can be pulled from the urls above check out
 
-[https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py](https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py)
+[https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py](https://github.com/knightsc/bbstats/blob/master/bin/teaminfo.py){: target="_blank"}
 
 And the results
 

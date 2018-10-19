@@ -18,7 +18,7 @@ You can't debug the kernel of your own machine so you will either need a second 
 
 ## Target
 1. Run `sw_vers | grep BuildVersion` to determine your build version.
-2. Download the appropriate Kernel Debug Kit from [Apple](https://developer.apple.com/download/more).
+2. Download the appropriate Kernel Debug Kit from [Apple](https://developer.apple.com/download/more){: target="_blank"}.
 3. Install the KDK package.
 4. Reboot to the Recovery System by restarting your target machine and hold down the `Command` and `R` keys at startup.
 5. From the Utilities menu, select `Terminal`.
@@ -60,8 +60,8 @@ sudo dtrace -w -n "BEGIN { breakpoint(); }"
 ```
 There are various kernel modules that provide alternate ways to drop into the debugger as well.
 
-[https://github.com/knightsc/EnterDebugger](https://github.com/knightsc/EnterDebugger)  
-[https://github.com/shiro-t/PseudoNMI](https://github.com/knightsc/EnterDebugger)  
+[https://github.com/knightsc/EnterDebugger](https://github.com/knightsc/EnterDebugger){: target="_blank"}  
+[https://github.com/shiro-t/PseudoNMI](https://github.com/shiro-t/PseudoNMI){: target="_blank"}  
 
 There are additional debug flags that can be set in the `boot-args` nvram variable. This is the current list of supported flags as of macOS 10.13.
 
@@ -69,10 +69,10 @@ There are additional debug flags that can be set in the `boot-args` nvram variab
 
 # References
 
-[Kernel Programming Guide](https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/KernelProgramming)  
-[IOKit Device Driver Design Guidelines](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/WritingDeviceDriver)  
-[https://reverse.put.as/2009/03/05/mac-os-x-kernel-debugging-with-vmware](https://reverse.put.as/2009/03/05/mac-os-x-kernel-debugging-with-vmware)  
-[http://ddeville.me/2015/08/kernel-debugging-with-lldb-and-vmware-fusion](http://ddeville.me/2015/08/kernel-debugging-with-lldb-and-vmware-fusion)  
-[https://lightbulbone.com/posts/2016/10/intro-to-macos-kernel-debugging](https://lightbulbone.com/posts/2016/10/intro-to-macos-kernel-debugging)  
-[https://klue.github.io/blog/2017/04/macos_kernel_debugging_vbox](https://klue.github.io/blog/2017/04/macos_kernel_debugging_vbox)  
-[https://www.mdsec.co.uk/2018/08/endpoint-security-self-protection-on-macos](https://www.mdsec.co.uk/2018/08/endpoint-security-self-protection-on-macos)
+[Kernel Programming Guide](https://developer.apple.com/library/archive/documentation/Darwin/Conceptual/KernelProgramming){: target="_blank"}  
+[IOKit Device Driver Design Guidelines](https://developer.apple.com/library/archive/documentation/DeviceDrivers/Conceptual/WritingDeviceDriver){: target="_blank"}  
+[https://reverse.put.as/2009/03/05/mac-os-x-kernel-debugging-with-vmware](https://reverse.put.as/2009/03/05/mac-os-x-kernel-debugging-with-vmware){: target="_blank"}  
+[http://ddeville.me/2015/08/kernel-debugging-with-lldb-and-vmware-fusion](http://ddeville.me/2015/08/kernel-debugging-with-lldb-and-vmware-fusion){: target="_blank"}  
+[https://lightbulbone.com/posts/2016/10/intro-to-macos-kernel-debugging](https://lightbulbone.com/posts/2016/10/intro-to-macos-kernel-debugging){: target="_blank"}  
+[https://klue.github.io/blog/2017/04/macos_kernel_debugging_vbox](https://klue.github.io/blog/2017/04/macos_kernel_debugging_vbox){: target="_blank"}  
+[https://www.mdsec.co.uk/2018/08/endpoint-security-self-protection-on-macos](https://www.mdsec.co.uk/2018/08/endpoint-security-self-protection-on-macos){: target="_blank"}  
