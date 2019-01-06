@@ -7,7 +7,7 @@ url: https://knight.sc
 logo: # path of site logo, e.g. "/assets/images/logo.png"
 date_format: "%B %-d, %Y"
 read_time: true
-words_per_minute: 200
+words_per_minute: 150
 mathjax: true
 google_fonts:
   - name: "Source Sans Pro"
