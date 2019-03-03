@@ -8,7 +8,7 @@ tags:
   - x86
 ---
 
-A common question that comes up when people start Swift development is what's the difference between a `struct` and a `class`? The standard answer is structs are value types and classes are refernce types. The Swift Programming Language book has a whole [section](https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html){: target="_blank"} reviewing this concept in more detail. From a reverse engineering perspective I always find it interesting to dive under the hood and see how the compiler actually handles the different concepts from high level languages. This post presents a very simple example of a struct and class in Swift and how the compiler deals with them.
+A common question that comes up when people start Swift development is what's the difference between a `struct` and a `class`? The standard answer is structs are value types and classes are reference types. The Swift Programming Language book has a whole [section](https://docs.swift.org/swift-book/LanguageGuide/ClassesAndStructures.html){: target="_blank"} reviewing this concept in more detail. From a reverse engineering perspective I always find it interesting to dive under the hood and see how the compiler actually handles the different concepts from high level languages. This post presents a very simple example of a struct and class in Swift and how the compiler deals with them.
 
 Let's start off with the example Swift code.
 
@@ -118,4 +118,4 @@ Looking at this disassembly you can already see the difference. Even though we h
 00000001000025af C3                     ret
 ```
 
-So what's the lesson to be learned from all of this? Well from a reverse enginering point of view, when reversing swift code, looking at the functions calls and what's passed in might give some hint to whether the high level language was using a struct or a class to implement the functionality. From a developer view I think it's important to keep in mind that no matter how large your struct is the compiler is going to attempt to copy all the values and pass them in to the function call. In this case, with only three member variables, it doesn't make much of a difference but in a larger struct with variables that are using larger chunks of memory it could.
+So what's the lesson to be learned from all of this? Well from a reverse enginering point of view, when reversing swift code, looking at the functions calls and what's passed in might give some hint to whether the original code was using a struct or a class to implement the functionality. From a developer view I think it's important to keep in mind that no matter how large your struct is the compiler is going to attempt to copy all the values and pass them in to the function call. In this case, with only three member variables, it doesn't make much of a difference but in a larger struct with variables that are using larger chunks of memory it could.
