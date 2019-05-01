@@ -1,10 +1,12 @@
 ---
-title: History of Nintendo Development
+title: History of Nintendo development
 categories:
-  - Software
+  - Reverse Engineering
 tags:
   - Nintendo
 ---
+
+I see a lot of parallels between the Apple jailbreak community and the Nintendo homebrew community. In both case developers want to be able to run their own software on the hardware the purchased. Over the years I think there's been great coverage of the evolution of iOS with Apple even recently releasing the ARM source code in one of the recent XNU kernel releases. Much of what we know of Nintendo is found from reverse engineering. And since each console can be a different beast there's not always a clear line of progression. With the Switch though it seemed like Nintendo is continuing their OS. Started researching into the history of nintendo OS and developement
 
 Start no devkit everything basically bare metal
 To having some libraries with common functions
@@ -16,6 +18,7 @@ Resources
 
 * NES - 10/18/1985
     * Bare metal
+    * https://en.wikipedia.org/wiki/Game_development_kit#Nintendo_Entertainment_System
     * https://wiki.nesdev.com/w/index.php/CPU_power_up_state
 * Game Boy - 04/21/1989
     * http://gbdev.gg8.se/wiki/articles/Gameboy_Bootstrap_ROM
@@ -112,7 +115,7 @@ Consoles that keep system services running after game launch
     * https://media.ccc.de/v/34c3-8941-console_security_-_switch#t=716 (custom microkernel called Horizon)
 
 
-https://en.wikipedia.org/wiki/Game_development_kit#Nintendo_Entertainment_System
+
 
 
 
