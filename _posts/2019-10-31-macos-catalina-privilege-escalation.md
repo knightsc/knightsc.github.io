@@ -30,7 +30,7 @@ So the `OSSystemExtensionPointListener` in the `SystemExtensions.framework` is w
 
 XPC is a standard IPC mechanism on macOS that any application utilize and copmmunicate with. So what's stopping a malicious application from sending a XPC request to `endpointsecurityd` asking it to launch a malicious program? Normally the answer is entitlements. Apple’s built a good system in macOS and iOS where critical subsystems of the OS are protected by entitlement checks. A random binary has to have a special entitlement embedded in it and be properly signed to communicate with critical parts of the OS. In this case however the `OSSystemExtensionPointListener` class did not have any entitlement checks. 
 
-This means that in macOS 10.15.0 an attacker can send a specially crafted XPC message directly to the `"com.apple.endpointsecurity.system-extensions"` service and request `launchd` to start any application the attacker chooses. Compoinding the issue, `launchd` will treat the application it’s starting as a system daemon. It will run it as root and ensure that the process is always running, even if the user tries to kill it.
+This means that in macOS 10.15.0 an attacker can send a specially crafted XPC message directly to the `"com.apple.endpointsecurity.system-extensions"` service and request `launchd` to start any application the attacker chooses. Compounding the issue, `launchd` will treat the application it’s starting as a system daemon. It will run it as root and ensure that the process is always running, even if the user tries to kill it.
 
 # Apple's Patch
 
