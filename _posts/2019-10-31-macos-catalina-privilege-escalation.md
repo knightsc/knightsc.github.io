@@ -3,9 +3,9 @@ title: CVE-2019-8805 - A macOS Catalina privilege escalation
 categories:
   - Reverse Engineering
 tags:
-  - Assembly
+  - Exploits
   - macOS
-  - x86
+  - Objective-C
 ---
 
 With the release of macOS Catalina in October, Apple rolled out a set of interesting new features collectively called [System Extensions](https://developer.apple.com/system-extensions/){: target="_blank"}. System Extensions are a set of user space frameworks encouraging developers who currently maintain and ship kernel extensions to move their features to user space for increased security and stability. One of these new frameworks is the [Endpoint Security](https://developer.apple.com/documentation/endpointsecurity){: target="_blank"} framework. As a security researcher this framework is of special interest. It’s intended to provide a public and stable API for implementing security products. During the process of looking into what functionality the Endpoint Security framework provided, a privilege escalation bug was identified that would let an attacker execute any code they wanted with root privileges. The following describes both the vulnerability as well as what Apple did to fix the issue.
