@@ -8,7 +8,7 @@ tags:
   - macOS
 ---
 
-A couple weeks ago Apple finally releassed the XNU source code for macOS Catalina. It looks like they have now added more of the open source packages needed to build the entire XNU kernel so it's time to update my build instructions.
+A couple weeks ago Apple finally released the XNU source code for macOS Catalina. It looks like they have now added more of the open source packages needed to build the entire XNU kernel, so it's time to update my build instructions.
 
 If you're interested in looking through what's new or changed in the latest XNU code, you can look at a diff of the latest source here:
 
